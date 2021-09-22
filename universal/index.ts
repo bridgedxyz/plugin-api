@@ -4,7 +4,7 @@ export { keyAnnotations, constraints } from "@design-sdk/core/features";
 // endregion
 
 // node
-export * as nodes from "@design-sdk/core/nodes";
+export * as nodes from "@design-sdk/core";
 
 // platform
 export * as _platform from "@design-sdk/core/platform";

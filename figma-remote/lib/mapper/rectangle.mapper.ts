@@ -7,14 +7,15 @@ import {
   blendRectangleCornerNode,
 } from "../blenders/corner.blend";
 export function mapFigmaRemoteRectangleToFigma(
-  remRect: Rectangle
+  remRect: Rectangle,
+  parent?
 ): Figma.RectangleNode {
   const mapping = new MappingRectangleNode();
   blendBaseNode({
     target: mapping,
     source: remRect,
+    parent,
   });
-  console.log("mapping.absoluteTransform", mapping.absoluteTransform);
 
   blendCornerNode({
     target: mapping,

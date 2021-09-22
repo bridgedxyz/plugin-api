@@ -1,4 +1,4 @@
-import { hosting } from "@base-sdk/base";
+import { upload } from "@base-sdk/hosting";
 import { ImageAsset, TransportableImageRepository } from "../image-repository";
 
 export class ImageHostingRepository {
@@ -46,7 +46,7 @@ async function hostImage(key: string, data: Uint8Array): Promise<string> {
   });
   // const uploaded = await upload(fileName, fileBlob)
 
-  const uploaded = await hosting.upload({
+  const uploaded = await upload({
     file: fileBlob,
     name: fileName,
   });

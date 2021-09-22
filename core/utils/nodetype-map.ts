@@ -1,4 +1,4 @@
-import { ReflectSceneNodeType } from "../nodes/types/node-type";
+import { ReflectSceneNodeType } from "@design-sdk/figma-node";
 
 export function originFigmaTypeToReflectType(
   type: string

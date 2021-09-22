@@ -1,0 +1,8 @@
+{
+    "name": "@design-sdk/vanilla",
+    "version": "0.0.0",
+    "private": false,
+    "peerDependencies": {
+        "@design-sdk/core": "0.0.0"
+    }
+}

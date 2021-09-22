@@ -1,0 +1,7 @@
+{
+    "name": "@design-sdk/figma-node-conversion",
+    "description": "convert figma nodes into a universal version - to reflect design nodes",
+    "version": "0.0.0",
+    "private": false,
+    "author": "Grida.co"
+}

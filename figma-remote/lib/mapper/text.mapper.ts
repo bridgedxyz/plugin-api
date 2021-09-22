@@ -14,11 +14,12 @@ import { blendBaseNode } from "../blenders/general.blend";
  * @param remText
  * @returns
  */
-export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
+export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
   const mapping = new MappingTextNode();
   blendBaseNode({
     target: mapping,
     source: remText,
+    parent,
   });
 
   return {
@@ -76,6 +77,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     clone: _FILL_INTERFACE_METHODS,
     insertCharacters: _FILL_INTERFACE_METHODS,
     deleteCharacters: _FILL_INTERFACE_METHODS,
+    getRangeAllFontNames: _FILL_INTERFACE_METHODS,
     getRangeFontSize: _FILL_INTERFACE_METHODS,
     setRangeFontSize: _FILL_INTERFACE_METHODS,
     getRangeFontName: _FILL_INTERFACE_METHODS,

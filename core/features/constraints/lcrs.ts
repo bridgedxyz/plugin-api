@@ -1,5 +1,8 @@
-import type { ReflectGroupNode, ReflectSceneNode } from "../../nodes";
-import { ReflectSceneNodeType } from "../../nodes/types/node-type";
+import type {
+  ReflectGroupNode,
+  ReflectSceneNode,
+} from "@design-sdk/figma-node";
+import { ReflectSceneNodeType } from "@design-sdk/figma-node";
 
 /**
  * @deprecated

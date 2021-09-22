@@ -7,11 +7,15 @@ import {
 import { Frame } from "@design-sdk/figma-remote-types";
 import { MappingFrameNode } from "./mapping-instance";
 
-export function mapFigmaRemoteFrameToFigma(remFrame: Frame): Figma.FrameNode {
+export function mapFigmaRemoteFrameToFigma(
+  remFrame: Frame,
+  parent?
+): Figma.FrameNode {
   const mapping = new MappingFrameNode();
   blendBaseNode({
     target: mapping,
     source: remFrame,
+    parent,
   });
 
   blendCornerNode({

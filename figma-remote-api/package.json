@@ -27,7 +27,7 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@design-sdk/figma-remote-types": "0.0.0",
+        "@design-sdk/figma-remote-types": "0.0.4",
         "@types/jest": "^26.0.24",
         "dotenv": "^10.0.0",
         "jest": "^27.0.6",

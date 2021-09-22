@@ -2,7 +2,7 @@
     "name": "@design-sdk/figma",
     "version": "0.0.0",
     "dependencies": {
-        "@reflect-ui/uiutils": "0.1.2",
+        "@reflect-ui/uiutils": "0.1.2-1",
         "@design-sdk/figma-url": "0.0.2",
         "@design-sdk/figma-remote": "0.0.0",
         "@design-sdk/figma-types": "0.0.0"

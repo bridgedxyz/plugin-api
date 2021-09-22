@@ -1,9 +1,10 @@
 import type {
   IChildrenMixin,
   IReflectChildrenMixin,
-} from "../nodes/types/mixins/children.mixin";
-import type { ReflectSceneNode } from "../nodes/types/node-type-alias";
-import { ReflectSceneNodeType } from "../nodes/types/node-type";
+  ReflectSceneNode,
+  IReflectNodeReference,
+} from "@design-sdk/figma-node";
+import { ReflectSceneNodeType } from "@design-sdk/figma-node";
 
 type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
 
@@ -15,14 +16,19 @@ type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
  */
 export function mapGrandchildren<
   I extends MaybeChildrenMixin<any> = IReflectChildrenMixin,
-  O = ReflectSceneNode
+  O = ReflectSceneNode,
+  ITEMS = O
 >(
   node: I,
   depth?: number,
   options?: {
     includeThis?: boolean;
     depthLimit?: number;
-  }
+  },
+  /**
+   * filter won't be applied to root. rather `includeThis` is set to true or not.
+   */
+  filter?: (node: ITEMS) => boolean
 ): Array<O> {
   const _current_depth = depth ?? 0;
 
@@ -41,6 +47,10 @@ export function mapGrandchildren<
     children.push(node as any);
   }
 
+  const add = (...items: ITEMS[]) => {
+    children.push(...(items.filter(filter ?? ((_) => true)) as any));
+  };
+
   if ("children" in node) {
     const castedNode = node as IChildrenMixin<I>;
     // children field may exist, but not a array or undefined
@@ -54,12 +64,12 @@ export function mapGrandchildren<
               depthLimit: options?.depthLimit,
             }
           );
-          children.push(...(grandchildren as any));
+          add(...(grandchildren as any));
         }
 
         // frame can be also a child, but not group. group only holds children, so we do not push group nodes
         if (!((child as any).type == ReflectSceneNodeType.group)) {
-          children.push(child as any);
+          add(child as any);
         }
       }
     }
@@ -82,4 +92,16 @@ export function mapChildren<
     // depth limit 1 indicates to fetch only direct children
     depthLimit: 1,
   });
+}
+
+/**
+ * used for determining if wrapping frame can be ignored - (base) usages.
+ * @param node
+ * @returns
+ */
+export function isTheOnlyChild(node: IReflectNodeReference) {
+  if (node.parent.children) {
+    return node.parent.children.length === 1;
+  }
+  throw `cannot operate "isTheOnlyChild". children is undefined for node "${node.parent.name}""`;
 }

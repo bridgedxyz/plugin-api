@@ -3,7 +3,7 @@
  * https://github.com/figma/plugin-typings/blob/master/index.d.ts
  * https://github.com/figma/plugin-typings/commit/e355d78a743797360c819dda783b73b5614485f7
  */
-
+//@ts-ignore
 export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
 
 /**
@@ -14,7 +14,6 @@ export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
 export function provideFigma(_figma) {
   figma = _figma;
 }
-
 
 export interface PluginAPI {
   readonly apiVersion: "1.0.0";
@@ -315,10 +314,10 @@ export interface SolidPaint {
 
 export interface GradientPaint {
   readonly type:
-  | "GRADIENT_LINEAR"
-  | "GRADIENT_RADIAL"
-  | "GRADIENT_ANGULAR"
-  | "GRADIENT_DIAMOND";
+    | "GRADIENT_LINEAR"
+    | "GRADIENT_RADIAL"
+    | "GRADIENT_ANGULAR"
+    | "GRADIENT_DIAMOND";
   readonly gradientTransform: Transform;
   readonly gradientStops: ReadonlyArray<ColorStop>;
 
@@ -449,12 +448,12 @@ export interface LetterSpacing {
 
 export type LineHeight =
   | {
-    readonly value: number;
-    readonly unit: "PIXELS" | "PERCENT";
-  }
+      readonly value: number;
+      readonly unit: "PIXELS" | "PERCENT";
+    }
   | {
-    readonly unit: "AUTO";
-  };
+      readonly unit: "AUTO";
+    };
 
 export type HyperlinkTarget = {
   type: "URL" | "NODE";
@@ -495,16 +494,16 @@ export type Action =
   | { readonly type: "BACK" | "CLOSE" }
   | { readonly type: "URL"; url: string }
   | {
-    readonly type: "NODE";
-    readonly destinationId: string | null;
-    readonly navigation: Navigation;
-    readonly transition: Transition | null;
-    readonly preserveScrollPosition: boolean;
+      readonly type: "NODE";
+      readonly destinationId: string | null;
+      readonly navigation: Navigation;
+      readonly transition: Transition | null;
+      readonly preserveScrollPosition: boolean;
 
-    // Only present if navigation == "OVERLAY" and the destination uses
-    // overlay position export type "RELATIVE"
-    readonly overlayRelativePosition?: Vector;
-  };
+      // Only present if navigation == "OVERLAY" and the destination uses
+      // overlay position export type "RELATIVE"
+      readonly overlayRelativePosition?: Vector;
+    };
 
 export interface SimpleTransition {
   readonly type: "DISSOLVE" | "SMART_ANIMATE" | "SCROLL_ANIMATE";
@@ -526,25 +525,30 @@ export type Transition = SimpleTransition | DirectionalTransition;
 export type Trigger =
   | { readonly type: "ON_CLICK" | "ON_HOVER" | "ON_PRESS" | "ON_DRAG" }
   | {
-    readonly type: "AFTER_TIMEOUT";
-    readonly timeout: number;
-  }
+      readonly type: "AFTER_TIMEOUT";
+      readonly timeout: number;
+    }
   | {
-    readonly type: "MOUSE_ENTER" | "MOUSE_LEAVE" | "MOUSE_UP" | "MOUSE_DOWN";
-    readonly delay: number;
-  }
+      readonly type: "MOUSE_ENTER" | "MOUSE_LEAVE" | "MOUSE_UP" | "MOUSE_DOWN";
+      readonly delay: number;
+    }
   | {
-    readonly type: "ON_KEY_DOWN";
-    readonly device:
-    | "KEYBOARD"
-    | "XBOX_ONE"
-    | "PS4"
-    | "SWITCH_PRO"
-    | "UNKNOWN_CONTROLLER";
-    readonly keyCodes: ReadonlyArray<number>;
-  };
+      readonly type: "ON_KEY_DOWN";
+      readonly device:
+        | "KEYBOARD"
+        | "XBOX_ONE"
+        | "PS4"
+        | "SWITCH_PRO"
+        | "UNKNOWN_CONTROLLER";
+      readonly keyCodes: ReadonlyArray<number>;
+    };
 
-export type Navigation = "NAVIGATE" | "SWAP" | "OVERLAY" | "SCROLL_TO" | "CHANGE_TO";
+export type Navigation =
+  | "NAVIGATE"
+  | "SWAP"
+  | "OVERLAY"
+  | "SCROLL_TO"
+  | "CHANGE_TO";
 
 export interface Easing {
   readonly type: "EASE_IN" | "EASE_OUT" | "EASE_IN_AND_OUT" | "LINEAR";
@@ -577,6 +581,25 @@ export type OverlayBackground =
 export type OverlayBackgroundInteraction = "NONE" | "CLOSE_ON_CLICK_OUTSIDE";
 
 export type PublishStatus = "UNPUBLISHED" | "CURRENT" | "CHANGED";
+
+export interface ConnectorEndpointPosition {
+  position: { x: number; y: number };
+}
+
+export interface ConnectorEndpointPositionAndEndpointNodeId {
+  position: { x: number; y: number };
+  endpointNodeId: string;
+}
+
+export interface ConnectorEndpointEndpointNodeIdAndMagnet {
+  endpointNodeId: string;
+  magnet: "NONE" | "AUTO" | "TOP" | "LEFT" | "BOTTOM" | "RIGHT";
+}
+
+export type ConnectorEndpoint =
+  | ConnectorEndpointPosition
+  | ConnectorEndpointEndpointNodeIdAndMagnet
+  | ConnectorEndpointPositionAndEndpointNodeId;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mixins
@@ -672,17 +695,21 @@ export type StrokeCap =
 export type StrokeJoin = "MITER" | "BEVEL" | "ROUND";
 export type HandleMirroring = "NONE" | "ANGLE" | "ANGLE_AND_LENGTH";
 
-export interface GeometryMixin {
-  fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+interface MinimalStrokesMixin {
   strokes: ReadonlyArray<Paint>;
-  strokeWeight: number;
-  strokeMiterLimit: number;
-  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
-  strokeCap: StrokeCap | PluginAPI["mixed"];
-  strokeJoin: StrokeJoin | PluginAPI["mixed"];
-  dashPattern: ReadonlyArray<number>;
-  fillStyleId: string | PluginAPI["mixed"];
   strokeStyleId: string;
+  strokeWeight: number;
+  strokeJoin: StrokeJoin | PluginAPI["mixed"];
+  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
+  dashPattern: ReadonlyArray<number>;
+}
+export interface MinimalFillsMixin {
+  fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+  fillStyleId: string | PluginAPI["mixed"];
+}
+export interface GeometryMixin extends MinimalStrokesMixin, MinimalFillsMixin {
+  strokeCap: StrokeCap | PluginAPI["mixed"];
+  strokeMiterLimit: number;
   outlineStroke(): VectorNode | null;
 }
 
@@ -730,25 +757,25 @@ export interface PublishableMixin {
 
 export interface DefaultShapeMixin
   extends BaseNodeMixin,
-  SceneNodeMixin,
-  ReactionMixin,
-  BlendMixin,
-  GeometryMixin,
-  LayoutMixin,
-  ExportMixin { }
+    SceneNodeMixin,
+    ReactionMixin,
+    BlendMixin,
+    GeometryMixin,
+    LayoutMixin,
+    ExportMixin {}
 
 export interface BaseFrameMixin
   extends BaseNodeMixin,
-  SceneNodeMixin,
-  ChildrenMixin,
-  ContainerMixin,
-  GeometryMixin,
-  CornerMixin,
-  RectangleCornerMixin,
-  BlendMixin,
-  ConstraintMixin,
-  LayoutMixin,
-  ExportMixin {
+    SceneNodeMixin,
+    ChildrenMixin,
+    ContainerMixin,
+    GeometryMixin,
+    CornerMixin,
+    RectangleCornerMixin,
+    BlendMixin,
+    ConstraintMixin,
+    LayoutMixin,
+    ExportMixin {
   layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
   primaryAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
   counterAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
@@ -770,137 +797,33 @@ export interface BaseFrameMixin
 
 export interface DefaultFrameMixin
   extends BaseFrameMixin,
-  FramePrototypingMixin,
-  ReactionMixin { }
+    FramePrototypingMixin,
+    ReactionMixin {}
 
-////////////////////////////////////////////////////////////////////////////////
-// Nodes
-
-export interface DocumentNode extends BaseNodeMixin {
-  readonly type: "DOCUMENT";
-
-  readonly children: ReadonlyArray<PageNode>;
-
-  appendChild(child: PageNode): void;
-  insertChild(index: number, child: PageNode): void;
-  findChildren(callback?: (node: PageNode) => boolean): Array<PageNode>;
-  findChild(callback: (node: PageNode) => boolean): PageNode | null;
-
-  /**
-   * If you only need to search immediate children, it is much faster
-   * to call node.children.filter(callback) or node.findChildren(callback)
-   */
-  findAll(
-    callback?: (node: PageNode | SceneNode) => boolean
-  ): Array<PageNode | SceneNode>;
-
-  /**
-   * If you only need to search immediate children, it is much faster
-   * to call node.children.find(callback) or node.findChild(callback)
-   */
-  findOne(
-    callback: (node: PageNode | SceneNode) => boolean
-  ): PageNode | SceneNode | null;
+export interface OpaqueNodeMixin extends BaseNodeMixin {
+  readonly absoluteTransform: Transform;
+  relativeTransform: Transform;
+  x: number;
+  y: number;
+  readonly width: number;
+  readonly height: number;
 }
 
-export interface PageNode extends BaseNodeMixin, ChildrenMixin, ExportMixin {
-  readonly type: "PAGE";
-  clone(): PageNode;
-
-  guides: ReadonlyArray<Guide>;
-  selection: ReadonlyArray<SceneNode>;
-  selectedTextRange: { node: TextNode; start: number; end: number } | null;
-
-  backgrounds: ReadonlyArray<Paint>;
-
-  readonly prototypeStartNode:
-  | FrameNode
-  | GroupNode
-  | ComponentNode
-  | InstanceNode
-  | null;
+interface MinimalBlendMixin {
+  readonly opacity?: number;
+  readonly blendMode?: BlendMode;
 }
 
-export interface FrameNode extends DefaultFrameMixin {
-  readonly type: "FRAME";
-  clone(): FrameNode;
+export interface VariantMixin {
+  readonly variantProperties: { [property: string]: string } | null;
 }
 
-export interface GroupNode
-  extends BaseNodeMixin,
-  SceneNodeMixin,
-  ReactionMixin,
-  ChildrenMixin,
-  ContainerMixin,
-  BlendMixin,
-  LayoutMixin,
-  ExportMixin {
-  readonly type: "GROUP";
-  clone(): GroupNode;
-}
-
-export interface SliceNode
-  extends BaseNodeMixin,
-  SceneNodeMixin,
-  LayoutMixin,
-  ExportMixin {
-  readonly type: "SLICE";
-  clone(): SliceNode;
-}
-
-export interface RectangleNode
-  extends DefaultShapeMixin,
-  ConstraintMixin,
-  CornerMixin,
-  RectangleCornerMixin {
-  readonly type: "RECTANGLE";
-  clone(): RectangleNode;
-}
-
-export interface LineNode extends DefaultShapeMixin, ConstraintMixin {
-  readonly type: "LINE";
-  clone(): LineNode;
-}
-
-export interface EllipseNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
-  readonly type: "ELLIPSE";
-  clone(): EllipseNode;
-  arcData: ArcData;
-}
-
-export interface PolygonNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
-  readonly type: "POLYGON";
-  clone(): PolygonNode;
-  pointCount: number;
-}
-
-export interface StarNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
-  readonly type: "STAR";
-  clone(): StarNode;
-  pointCount: number;
-  innerRadius: number;
-}
-
-export interface VectorNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
-  readonly type: "VECTOR";
-  clone(): VectorNode;
-  vectorNetwork: VectorNetwork;
-  vectorPaths: VectorPaths;
-  handleMirroring: HandleMirroring | PluginAPI["mixed"];
-}
-
-export interface TextNode extends DefaultShapeMixin, ConstraintMixin {
-  readonly type: "TEXT";
-  clone(): TextNode;
+export interface TextSublayerNode {
   readonly hasMissingFont: boolean;
-  textAlignHorizontal: "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
-  textAlignVertical: "TOP" | "CENTER" | "BOTTOM";
-  textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
+
   paragraphIndent: number;
   paragraphSpacing: number;
-  autoRename: boolean;
 
-  textStyleId: string | PluginAPI["mixed"];
   fontSize: number | PluginAPI["mixed"];
   fontName: FontName | PluginAPI["mixed"];
   textCase: TextCase | PluginAPI["mixed"];
@@ -921,6 +844,7 @@ export interface TextNode extends DefaultShapeMixin, ConstraintMixin {
   setRangeFontSize(start: number, end: number, value: number): void;
   getRangeFontName(start: number, end: number): FontName | PluginAPI["mixed"];
   setRangeFontName(start: number, end: number, value: FontName): void;
+  getRangeAllFontNames(start: number, end: number): FontName[];
   getRangeTextCase(start: number, end: number): TextCase | PluginAPI["mixed"];
   setRangeTextCase(start: number, end: number, value: TextCase): void;
   getRangeTextDecoration(
@@ -965,37 +889,250 @@ export interface TextNode extends DefaultShapeMixin, ConstraintMixin {
   getRangeIndentation(start: number, end: number): number | PluginAPI["mixed"];
   setRangeIndentation(start: number, end: number, value: number): void;
 }
+////////////////////////////////////////////////////////////////////////////////
+// Nodes
+interface DocumentNode extends BaseNodeMixin {
+  readonly type: "DOCUMENT";
+
+  readonly children: ReadonlyArray<PageNode>;
+
+  appendChild(child: PageNode): void;
+  insertChild(index: number, child: PageNode): void;
+  findChildren(callback?: (node: PageNode) => boolean): Array<PageNode>;
+  findChild(callback: (node: PageNode) => boolean): PageNode | null;
+
+  /**
+   * If you only need to search immediate children, it is much faster
+   * to call node.children.filter(callback) or node.findChildren(callback)
+   */
+  findAll(
+    callback?: (node: PageNode | SceneNode) => boolean
+  ): Array<PageNode | SceneNode>;
+
+  /**
+   * If you only need to search immediate children, it is much faster
+   * to call node.children.find(callback) or node.findChild(callback)
+   */
+  findOne(
+    callback: (node: PageNode | SceneNode) => boolean
+  ): PageNode | SceneNode | null;
+}
+
+export interface PageNode extends BaseNodeMixin, ChildrenMixin, ExportMixin {
+  readonly type: "PAGE";
+  clone(): PageNode;
+
+  guides: ReadonlyArray<Guide>;
+  selection: ReadonlyArray<SceneNode>;
+  selectedTextRange: { node: TextNode; start: number; end: number } | null;
+  flowStartingPoints: ReadonlyArray<{ nodeId: string; name: string }>;
+
+  backgrounds: ReadonlyArray<Paint>;
+
+  readonly prototypeStartNode:
+    | FrameNode
+    | GroupNode
+    | ComponentNode
+    | InstanceNode
+    | null;
+}
+
+export interface FrameNode extends DefaultFrameMixin {
+  readonly type: "FRAME";
+  clone(): FrameNode;
+}
+
+export interface GroupNode
+  extends BaseNodeMixin,
+    SceneNodeMixin,
+    ReactionMixin,
+    ChildrenMixin,
+    ContainerMixin,
+    BlendMixin,
+    LayoutMixin,
+    ExportMixin {
+  readonly type: "GROUP";
+  clone(): GroupNode;
+}
+
+export interface SliceNode
+  extends BaseNodeMixin,
+    SceneNodeMixin,
+    LayoutMixin,
+    ExportMixin {
+  readonly type: "SLICE";
+  clone(): SliceNode;
+}
+
+export interface RectangleNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin,
+    RectangleCornerMixin {
+  readonly type: "RECTANGLE";
+  clone(): RectangleNode;
+}
+
+export interface LineNode extends DefaultShapeMixin, ConstraintMixin {
+  readonly type: "LINE";
+  clone(): LineNode;
+}
+
+export interface EllipseNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
+  readonly type: "ELLIPSE";
+  clone(): EllipseNode;
+  arcData: ArcData;
+}
+
+export interface PolygonNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
+  readonly type: "POLYGON";
+  clone(): PolygonNode;
+  pointCount: number;
+}
+
+export interface StarNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
+  readonly type: "STAR";
+  clone(): StarNode;
+  pointCount: number;
+  innerRadius: number;
+}
+
+export interface VectorNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
+  readonly type: "VECTOR";
+  clone(): VectorNode;
+  vectorNetwork: VectorNetwork;
+  vectorPaths: VectorPaths;
+  handleMirroring: HandleMirroring | PluginAPI["mixed"];
+}
+
+export interface TextNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    TextSublayerNode {
+  readonly type: "TEXT";
+  clone(): TextNode;
+
+  textAlignHorizontal: "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
+  textAlignVertical: "TOP" | "CENTER" | "BOTTOM";
+  textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
+  paragraphIndent: number;
+  paragraphSpacing: number;
+  autoRename: boolean;
+
+  textStyleId: string | PluginAPI["mixed"];
+}
 
 export interface ComponentSetNode extends BaseFrameMixin, PublishableMixin {
   readonly type: "COMPONENT_SET";
   clone(): ComponentSetNode;
   readonly defaultVariant: ComponentNode;
+  readonly variantGroupProperties: { [property: string]: { values: string[] } };
 }
 
-export interface ComponentNode extends DefaultFrameMixin, PublishableMixin {
+export interface ComponentNode
+  extends DefaultFrameMixin,
+    PublishableMixin,
+    VariantMixin {
   readonly type: "COMPONENT";
   clone(): ComponentNode;
   createInstance(): InstanceNode;
 }
 
-export interface InstanceNode extends DefaultFrameMixin {
+export interface InstanceNode extends DefaultFrameMixin, VariantMixin {
   readonly type: "INSTANCE";
   clone(): InstanceNode;
   mainComponent: ComponentNode | null;
   swapComponent(componentNode: ComponentNode): void;
+  setProperties(properties: { [property: string]: string }): void;
   detachInstance(): FrameNode;
   scaleFactor: number;
 }
 
 export interface BooleanOperationNode
   extends DefaultShapeMixin,
-  ChildrenMixin,
-  CornerMixin {
+    ChildrenMixin,
+    CornerMixin {
   readonly type: "BOOLEAN_OPERATION";
   clone(): BooleanOperationNode;
   booleanOperation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
 
   expanded: boolean;
+}
+
+export interface StickyNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    ExportMixin {
+  readonly type: "STICKY";
+  readonly text: TextSublayerNode;
+  authorVisible: boolean;
+}
+
+export interface StampNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    ExportMixin {
+  readonly type: "STAMP";
+}
+
+export interface ShapeWithTextNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    MinimalStrokesMixin,
+    ExportMixin {
+  readonly type: "SHAPE_WITH_TEXT";
+  shapeType:
+    | "SQUARE"
+    | "ELLIPSE"
+    | "ROUNDED_RECTANGLE"
+    | "DIAMOND"
+    | "TRIANGLE_UP"
+    | "TRIANGLE_DOWN"
+    | "PARALLELOGRAM_RIGHT"
+    | "PARALLELOGRAM_LEFT";
+  readonly text: TextSublayerNode;
+  readonly cornerRadius?: number;
+
+  resize(width: number, height: number): void;
+  rescale(scale: number): void;
+}
+
+export interface LayerSublayerNode {
+  fills: Paint[] | PluginAPI["mixed"];
+}
+
+export interface ConnectorNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    MinimalStrokesMixin,
+    ExportMixin {
+  readonly type: "CONNECTOR";
+  readonly text: TextSublayerNode;
+  readonly textBackground: LayerSublayerNode;
+  readonly cornerRadius?: number;
+  connectorLineType: "ELBOWED" | "STRAIGHT";
+  connectorStart: ConnectorEndpoint;
+  connectorEnd: ConnectorEndpoint;
 }
 
 export type BaseNode = DocumentNode | PageNode | SceneNode;
@@ -1014,25 +1151,13 @@ export type SceneNode =
   | EllipseNode
   | PolygonNode
   | RectangleNode
-  | TextNode;
+  | TextNode
+  | StickyNode
+  | ConnectorNode
+  | ShapeWithTextNode
+  | StampNode;
 
-export type NodeType =
-  | "DOCUMENT"
-  | "PAGE"
-  | "SLICE"
-  | "FRAME"
-  | "GROUP"
-  | "COMPONENT_SET"
-  | "COMPONENT"
-  | "INSTANCE"
-  | "BOOLEAN_OPERATION"
-  | "VECTOR"
-  | "STAR"
-  | "LINE"
-  | "ELLIPSE"
-  | "POLYGON"
-  | "RECTANGLE"
-  | "TEXT";
+export type NodeType = BaseNode["type"];
 
 ////////////////////////////////////////////////////////////////////////////////
 // Styles
@@ -1080,22 +1205,21 @@ export interface Image {
   getBytesAsync(): Promise<Uint8Array>;
 }
 
-
 /// https://github.com/figma/plugin-typings/blob/master/LICENSE
 /// MIT License
-/// 
+///
 /// Copyright(c) 2021 Figma, Inc.
-/// 
+///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files(the "Software"), to deal
 ///   in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in all
 /// copies or substantial portions of the Software.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ///   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE

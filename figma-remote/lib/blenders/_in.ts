@@ -32,4 +32,5 @@ export type MappableNode =
 export type MappingBlendInput<T = MappingNode, S = MappableNode> = {
   target: T;
   source: S;
+  parent?: MappableNode;
 };

@@ -26,7 +26,7 @@ export interface FileParams {
   /**
    * Set to "paths" to export vector data
    */
-  readonly geometry?: string;
+  readonly geometry?: "paths";
 }
 
 export interface FileNodesParams {

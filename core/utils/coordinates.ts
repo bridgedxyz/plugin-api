@@ -1,4 +1,4 @@
-import { ReflectSceneNode, ReflectSceneNodeType } from "@design-sdk/core/nodes";
+import { ReflectSceneNode, ReflectSceneNodeType } from "@design-sdk/core";
 
 /**
  * In Figma, Groups have absolute position while Frames have relative.

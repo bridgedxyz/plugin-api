@@ -28,6 +28,6 @@
     },
     "devDependencies": {
         "typescript": "^4.3.5",
-        "@design-sdk/figma-remote-types": "0.0.0"
+        "@design-sdk/figma-remote-types": "0.0.4"
     }
 }

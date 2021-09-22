@@ -1,4 +1,4 @@
-import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import type { ReflectSceneNode } from "@design-sdk/core";
 import { coordinates } from "./coordinates";
 
 type Position =

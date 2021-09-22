@@ -8,6 +8,7 @@ import { Figma } from "@design-sdk/figma-types";
 export type MappingNode =
   | MappingRectangleNode
   | MappingEllipseNode
+  | MappingVectorNode
   | MappingFrameNode
   | MappingGroupNode
   | MappingTextNode;
@@ -178,6 +179,88 @@ export class MappingEllipseNode implements Figma.EllipseNode {
   cornerSmoothing: number;
 }
 
+export class MappingVectorNode implements Figma.VectorNode {
+  type: "VECTOR";
+  clone(): Figma.VectorNode {
+    throw new Error("Method not implemented.");
+  }
+  vectorNetwork: Figma.VectorNetwork;
+  vectorPaths: Figma.VectorPaths;
+  handleMirroring: Figma.PluginAPI["mixed"] | Figma.HandleMirroring;
+  id: string;
+  parent: Figma.BaseNode & Figma.ChildrenMixin;
+  name: string;
+  removed: boolean;
+  toString(): string {
+    throw new Error("Method not implemented.");
+  }
+  remove(): void {
+    throw new Error("Method not implemented.");
+  }
+  getPluginData(key: string): string {
+    throw new Error("Method not implemented.");
+  }
+  setPluginData(key: string, value: string): void {
+    throw new Error("Method not implemented.");
+  }
+  getSharedPluginData(namespace: string, key: string): string {
+    throw new Error("Method not implemented.");
+  }
+  setSharedPluginData(namespace: string, key: string, value: string): void {
+    throw new Error("Method not implemented.");
+  }
+  setRelaunchData(data: { [command: string]: string }): void {
+    throw new Error("Method not implemented.");
+  }
+  visible: boolean;
+  locked: boolean;
+  reactions: readonly Figma.Reaction[];
+  opacity: number;
+  blendMode: "PASS_THROUGH" | Figma.BlendMode;
+  isMask: boolean;
+  effects: readonly Figma.Effect[];
+  effectStyleId: string;
+  strokeCap: Figma.PluginAPI["mixed"] | Figma.StrokeCap;
+  strokeMiterLimit: number;
+  outlineStroke(): Figma.VectorNode {
+    throw new Error("Method not implemented.");
+  }
+  strokes: readonly Figma.Paint[];
+  strokeStyleId: string;
+  strokeWeight: number;
+  strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
+  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
+  dashPattern: readonly number[];
+  fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
+  fillStyleId: string | Figma.PluginAPI["mixed"];
+  absoluteTransform: Figma.Transform;
+  relativeTransform: Figma.Transform;
+  x: number;
+  y: number;
+  rotation: number;
+  width: number;
+  height: number;
+  constrainProportions: boolean;
+  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutGrow: number;
+  resize(width: number, height: number): void {
+    throw new Error("Method not implemented.");
+  }
+  resizeWithoutConstraints(width: number, height: number): void {
+    throw new Error("Method not implemented.");
+  }
+  rescale(scale: number): void {
+    throw new Error("Method not implemented.");
+  }
+  exportSettings: readonly Figma.ExportSettings[];
+  exportAsync(settings?: Figma.ExportSettings): Promise<Uint8Array> {
+    throw new Error("Method not implemented.");
+  }
+  constraints: Figma.Constraints;
+  cornerRadius: number | Figma.PluginAPI["mixed"];
+  cornerSmoothing: number;
+}
+
 export class MappingTextNode implements Figma.TextNode {
   type: "TEXT";
   clone(): Figma.TextNode {
@@ -217,6 +300,9 @@ export class MappingTextNode implements Figma.TextNode {
     throw new Error("Method not implemented.");
   }
   setRangeFontSize(start: number, end: number, value: number): void {
+    throw new Error("Method not implemented.");
+  }
+  getRangeAllFontNames(start: number, end: number): Figma.FontName[] {
     throw new Error("Method not implemented.");
   }
   getRangeFontName(
@@ -374,19 +460,36 @@ export class MappingTextNode implements Figma.TextNode {
   }
   constraints: Figma.Constraints;
 
-  getRangeHyperlink(start: number, end: number): Figma.PluginAPI["mixed"] | Figma.HyperlinkTarget {
+  getRangeHyperlink(
+    start: number,
+    end: number
+  ): Figma.PluginAPI["mixed"] | Figma.HyperlinkTarget {
     throw new Error("Method not implemented.");
   }
-  setRangeHyperlink(start: number, end: number, value: Figma.HyperlinkTarget): void {
+  setRangeHyperlink(
+    start: number,
+    end: number,
+    value: Figma.HyperlinkTarget
+  ): void {
     throw new Error("Method not implemented.");
   }
-  getRangeListOptions(start: number, end: number): Figma.PluginAPI["mixed"] | Figma.TextListOptions {
+  getRangeListOptions(
+    start: number,
+    end: number
+  ): Figma.PluginAPI["mixed"] | Figma.TextListOptions {
     throw new Error("Method not implemented.");
   }
-  setRangeListOptions(start: number, end: number, value: Figma.TextListOptions): void {
+  setRangeListOptions(
+    start: number,
+    end: number,
+    value: Figma.TextListOptions
+  ): void {
     throw new Error("Method not implemented.");
   }
-  getRangeIndentation(start: number, end: number): number | Figma.PluginAPI["mixed"] {
+  getRangeIndentation(
+    start: number,
+    end: number
+  ): number | Figma.PluginAPI["mixed"] {
     throw new Error("Method not implemented.");
   }
   setRangeIndentation(start: number, end: number, value: number): void {

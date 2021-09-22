@@ -1,0 +1,8 @@
+{
+    "name": "@design-sdk/figma-node",
+    "description": "A temporary reflect node definition alias based on figma typings",
+    "version": "0.0.0",
+    "author": "Grida.co",
+    "private": false,
+    "license": "MIT"
+}

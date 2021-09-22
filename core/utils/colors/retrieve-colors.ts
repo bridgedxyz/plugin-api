@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@design-sdk/core/nodes";
+import { ReflectSceneNode } from "@design-sdk/core";
 import { retrieveFill } from "@design-sdk/core/utils";
 import { calculateContrastRatio } from "@reflect-ui/uiutils";
 import { converters } from "@reflect-ui/core/lib";

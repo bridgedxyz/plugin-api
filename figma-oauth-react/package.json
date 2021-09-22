@@ -1,0 +1,8 @@
+{
+    "name": "@design-sdk/figma-oauth-react",
+    "description": "Ready to use Figma oauth component for react",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "main": "dist/index.js",
+    "dependencies": {}
+}

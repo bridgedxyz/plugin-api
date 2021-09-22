@@ -1,4 +1,4 @@
-import { ReflectTextNode } from "@design-sdk/core/nodes";
+import { ReflectTextNode } from "@design-sdk/core";
 
 export function commonLineHeight(node: ReflectTextNode): number {
   if (

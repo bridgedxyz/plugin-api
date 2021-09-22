@@ -66,6 +66,7 @@ export async function fetchTarget(
 
   const nodesRes = await client.fileNodes(file, {
     ids: [node],
+    geometry: "paths",
   });
   const nodes = nodesRes.data.nodes;
 
@@ -89,6 +90,7 @@ export async function fetchDemo(
 
   const nodesRes = await client.fileNodes(_fid, {
     ids: [_nid],
+    geometry: "paths",
   });
 
   const nodes = nodesRes.data.nodes;
@@ -101,4 +103,45 @@ export async function fetchDemo(
     node: _nid,
     remote: d,
   };
+}
+
+export async function fetchImagesOfFile(
+  file: string,
+  auth: AuthenticationCredential
+): Promise<{ [key: string]: string }> {
+  const client = api.Client({
+    ...auth,
+  });
+
+  const res = await client.fileImageFills(file);
+  if (!res.data.error && res.data.status == 200) {
+    const images_maps = res.data.meta.images;
+    return images_maps;
+  }
+
+  // if failed, return empty map.
+  return {};
+}
+
+export async function fetchNodeAsImage(
+  file: string,
+  auth: AuthenticationCredential,
+  ...nodes: string[]
+): Promise<{ [key: string]: string }> {
+  const client = api.Client({
+    ...auth,
+  });
+
+  const res = await client.fileImages(file, {
+    ids: nodes,
+  });
+
+  if (res.data && !res.data.err) {
+    const images_maps = res.data.images;
+    return images_maps;
+  }
+
+  // if failed, return empty map.
+  return {};
+  //
 }

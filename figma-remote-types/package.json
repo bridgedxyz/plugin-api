@@ -1,8 +1,9 @@
 {
     "name": "@design-sdk/figma-remote-types",
     "description": "Light-weight Figma Remote api wrapper with types & authentication",
-    "main": "index.d.ts",
+    "main": "index.js",
     "types": "index.d.ts",
+    "version": "0.0.4",
     "keywords": [
         "figma",
         "oauth",
@@ -16,7 +17,6 @@
     "homepage": "https://github.com/gridaco/design-sdk/",
     "repository": "https://github.com/gridaco/design-sdk/tree/main/figma-remote-api/",
     "authors": "Grida.co",
-    "version": "0.0.1",
     "license": "MIT",
     "scripts": {
         "test": "jest"
@@ -30,6 +30,7 @@
     },
     "files": [
         "index.d.ts",
+        "index.js",
         "README",
         "LICENSE"
     ],

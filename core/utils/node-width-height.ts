@@ -1,5 +1,5 @@
-import { ReflectSceneNode } from "@design-sdk/core/nodes";
-import { Axis } from "@reflect-ui/core/lib";
+import { ReflectSceneNode } from "@design-sdk/core";
+import { Axis } from "@reflect-ui/core";
 
 export const magicMargin = 32;
 
@@ -12,7 +12,7 @@ export function nodeWidthHeight(
   node: ReflectSceneNode,
   allowRelative: boolean
 ): SizeResult {
-  if (node.layoutAlign === "STRETCH" && node.layoutGrow === "STRETCH") {
+  if (node.layoutAlign === "STRETCH" && node.layoutGrow === 1) {
     return {
       width: "full",
       height: "full",
@@ -38,7 +38,7 @@ export function nodeWidthHeight(
     }
 
     // Grow means the same direction
-    if (node.layoutGrow === "STRETCH") {
+    if (node.layoutGrow === 1) {
       if (node.parent.layoutMode === Axis.horizontal) {
         propWidth = "full";
       } else {
